@@ -2,19 +2,31 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Movement")]
     public float moveSpeed = 3f;
 
     [Header("Pop Up")]
     public float undergroundDepth = 2f;
     public float popUpSpeed = 4f;
 
+    [Header("Knockback")]
+    [SerializeField] private float knockbackForce = 5f;
+    [SerializeField] private float knockbackDuration = 0.2f;
+
     private Transform player;
+
     private bool poppingUp = true;
     private float groundY;
 
+    // Knockback variables
+    private bool isBeingKnockedBack = false;
+    private Vector3 knockbackDirection;
+    private float knockbackTimer;
+
     void Start()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        GameObject playerObject =
+            GameObject.FindGameObjectWithTag("Player");
 
         if (playerObject != null)
         {
@@ -55,11 +67,31 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        // Handle knockback
+        if (isBeingKnockedBack)
+        {
+            transform.position +=
+                knockbackDirection *
+                knockbackForce *
+                Time.deltaTime;
+
+            knockbackTimer -= Time.deltaTime;
+
+            if (knockbackTimer <= 0f)
+            {
+                isBeingKnockedBack = false;
+            }
+
+            return;
+        }
+
         // Then: chase the player
         if (player == null)
             return;
 
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction =
+            player.position - transform.position;
+
         direction.y = 0f;
 
         if (direction.sqrMagnitude > 0.01f)
@@ -67,7 +99,9 @@ public class Enemy : MonoBehaviour
             direction.Normalize();
 
             transform.position +=
-                direction * moveSpeed * Time.deltaTime;
+                direction *
+                moveSpeed *
+                Time.deltaTime;
 
             Quaternion targetRotation =
                 Quaternion.LookRotation(direction);
@@ -78,5 +112,20 @@ public class Enemy : MonoBehaviour
                 10f * Time.deltaTime
             );
         }
+    }
+
+    public void ApplyKnockback(Vector3 direction)
+    {
+        knockbackDirection = direction.normalized;
+
+        knockbackTimer = knockbackDuration;
+
+        isBeingKnockedBack = true;
+
+        // Rotate enemy to face the direction it's being pushed
+        Quaternion targetRotation =
+            Quaternion.LookRotation(knockbackDirection);
+
+        transform.rotation = targetRotation;
     }
 }
