@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float knockbackDuration = 0.2f;
 
     private Transform player;
+    private Animator animator;
 
     private bool poppingUp = true;
     private float groundY;
@@ -27,6 +28,8 @@ public class Enemy : MonoBehaviour
     {
         GameObject playerObject =
             GameObject.FindGameObjectWithTag("Player");
+
+        animator = GetComponent<Animator>();
 
         if (playerObject != null)
         {
@@ -93,6 +96,8 @@ public class Enemy : MonoBehaviour
             player.position - transform.position;
 
         direction.y = 0f;
+
+        if (direction.sqrMagnitude < 1) animator.SetTrigger("attack");
 
         if (direction.sqrMagnitude > 0.01f)
         {
