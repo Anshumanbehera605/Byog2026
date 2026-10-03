@@ -10,6 +10,8 @@ public class MeleeAttack : MonoBehaviour
     // Enemies currently inside attack range
     private HashSet<EnemyHealth> enemiesInRange = new HashSet<EnemyHealth>();
 
+    public Animator animator;
+
     void Start()
     {
         attackCollider = GetComponent<SphereCollider>();
@@ -37,6 +39,7 @@ public class MeleeAttack : MonoBehaviour
         {
             nearestEnemy.TakeDamage(damage, transform);
             Debug.Log("Hit enemy for " + damage + " damage!");
+            animator.SetTrigger("attack");
         }
         else
         {

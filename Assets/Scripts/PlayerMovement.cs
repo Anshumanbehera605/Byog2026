@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Detection")]
     public LayerMask groundMask;
     public float groundCheckDistance = 0.15f;
+    public Animator animator;
 
     private CharacterController controller;
 
@@ -66,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
                 rotationSpeed * Time.deltaTime
             );
         }
+
+        animator.SetFloat("speed", movement.sqrMagnitude);
 
         // ------------------------------------------------
         // Gravity
