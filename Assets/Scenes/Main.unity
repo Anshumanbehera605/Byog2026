@@ -908,6 +908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeAttack
   damage: 25
+  damageDelay: 0.4
   animator: {fileID: 289377025}
 --- !u!135 &802379285
 SphereCollider:
@@ -1217,11 +1218,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   player: {fileID: 802379278}
-  enemyPrefab: {fileID: 5745918046178005872, guid: c7581bbb2e2234c45ba35f46d6e5ca9b, type: 3}
+  enemyPrefabs:
+  - {fileID: 5745918046178005872, guid: c7581bbb2e2234c45ba35f46d6e5ca9b, type: 3}
+  - {fileID: 4768293194108867737, guid: 154b9541dace86f49a93d42fd6ac2c92, type: 3}
   spawnEffect: {fileID: 0}
-  spawnDistance: 3
+  minSpawnDistance: 4
+  maxSpawnDistance: 8
   groundLevel: 1
-  spawnInterval: 2
+  spawnInterval: 10
+  minEnemiesPerWave: 2
+  maxEnemiesPerWave: 2
 --- !u!4 &1845066531
 Transform:
   m_ObjectHideFlags: 0
